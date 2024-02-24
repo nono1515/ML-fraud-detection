@@ -1,0 +1,10 @@
+stages:
+  split:
+    cmd: python src/split.py data/creditcard.csv data/split params.yaml
+    deps:
+      - src/split.py
+      - data/creditcard.csv
+    params:
+      - split
+    outs:
+      - data/split

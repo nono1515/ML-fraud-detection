@@ -33,7 +33,7 @@ repos:
   rev: v1.8.0
   hooks:
   - id: mypy
-    additional_dependencies: [pandas-stubs]
+    additional_dependencies: [pandas-stubs, types-PyYAML]
             # For some reason, mypy hook does not read mypy config in pyproject.toml
             # even though runnning `python -m mypy .` does
     args: [--disallow-untyped-defs, --ignore-missing-imports, --warn-no-return]

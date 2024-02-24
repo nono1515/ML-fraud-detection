@@ -1,0 +1,24 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: python src/split.py data/creditcard.csv data/split params.yaml
+    deps:
+    - path: data/creditcard.csv
+      hash: md5
+      md5: e90efcb83d69faf99fcab8b0255024de
+      size: 150828752
+    - path: src/split.py
+      hash: md5
+      md5: 01a629c504e5db8ae1508bb8324f19a5
+      size: 1508
+    params:
+      params.yaml:
+        split:
+          test_size: 0.2
+          random_state: 123456
+    outs:
+    - path: data/split
+      hash: md5
+      md5: 8822ff6884be02789b0fdef15483e150.dir
+      size: 150817718
+      nfiles: 2
