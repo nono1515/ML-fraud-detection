@@ -1,0 +1,56 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: trailing-whitespace
+    args: [--markdown-linebreak-ext=md]
+  - id: check-docstring-first
+  - id: check-json
+  - id: check-yaml
+  - id: check-toml
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+  - id: requirements-txt-fixer
+  - id: check-added-large-files
+- repo: https://github.com/psf/black
+  rev: 24.2.0
+  hooks:
+  - id: black
+- repo: https://github.com/PyCQA/isort
+  rev: 5.13.2
+  hooks:
+  - id: isort
+- repo: local
+  hooks:
+  - id: pylint
+    name: pylint
+    entry: pylint
+    language: system
+    types: [python]
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.8.0
+  hooks:
+  - id: mypy
+    additional_dependencies: [pandas-stubs]
+            # For some reason, mypy hook does not read mypy config in pyproject.toml
+            # even though runnning `python -m mypy .` does
+    args: [--disallow-untyped-defs, --ignore-missing-imports, --warn-no-return]
+
+- repo: https://github.com/iterative/dvc
+  rev: 3.47.0
+  hooks:
+  - id: dvc-pre-commit
+    additional_dependencies:
+    - .[all]
+    language_version: python3
+    stages:
+    - commit
+  - id: dvc-post-checkout
+    additional_dependencies:
+    - .[all]
+    language_version: python3
+    stages:
+    - post-checkout
+    always_run: true
