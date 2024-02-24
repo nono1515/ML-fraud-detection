@@ -14,9 +14,7 @@ venv/
 # VSCode
 .vscode/
 
-# Data files and directories
-data/
-
+# Data files
 *.csv
 *.png
 *.pickle

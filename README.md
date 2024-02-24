@@ -5,7 +5,14 @@
 ## Setup
 
 #### Datatset
-The `Credit Card Fraud Detection` dataset needs to be downloaded from [kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and place in the source directory of this repo. It should be named `creditcard.csv`.
+The `Credit Card Fraud Detection` dataset needs to be downloaded from [kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) and place in the data directory of this repo. It should be named `creditcard.csv`.
+```
+ML-fraud-detection
+├── data
+│   ├── creditcard.csv
+│   ├── ...
+├── ...
+```
 
 #### Python environnment
 The code was tested with Python 3.11 and Windows Subsystem for Linux (WSL). One need to create a virtual environnement first and install all dependancies.
