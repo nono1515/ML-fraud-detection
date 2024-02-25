@@ -89,7 +89,7 @@ def save_confusion_matrices(
     train_preds: np.ndarray,
 ) -> None:
     """Save confusion matrices"""
-    y_labels = ["fraud" if y_ else "No fraud" for y_ in y.values]
+    y_labels = ["fraud" if y_ else "No fraud" for y_ in y.squeeze()]
 
     val_preds_labels = ["fraud" if y_ else "No fraud" for y_ in cross_val_preds]
     val_confusion_matrix = [("actual", "predicted")]
