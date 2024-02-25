@@ -42,12 +42,6 @@ plots:
       y:
         plots/cm/train.csv: predicted
         plots/cm/validation.csv: predicted
-  - Confusion-Matrix-normalized:
-      template: confusion_normalized
-      x: actual
-      y:
-        plots/cm/train.csv: predicted
-        plots/cm/validation.csv: predicted
 
   - Precision-Recall:
       template: simple
