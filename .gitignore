@@ -21,3 +21,9 @@ venv/
 *.pkl
 *.joblib
 *.npy
+
+# dvc plots
+*.html
+
+# XGBoost model
+/model.json

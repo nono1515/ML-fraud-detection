@@ -1,3 +1,17 @@
 split:
   test_size: 0.2
   random_state: 123456
+
+train:
+  k_fold: 5
+  random_state: 123456
+  target_col: Class
+  xgb_params:
+    device: gpu
+    eta: 0.3 # Step size shrinkage, defaults to 0.3
+    max_depth: 6 # Maximum depth of a tree, defaults to 6
+    subsample: 0.5 # Subsample ratio of the training instances, defaults to 1
+    colsample_bytree: 0.8 # Subselection feature for each tree, defaults to 1
+    lambda: 1 # L2-regularization, defaults to 1
+    alpha: 0 # L1-regularization, defaults to 0
+    objective: binary:logistic

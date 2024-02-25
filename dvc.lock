@@ -9,8 +9,8 @@ stages:
       size: 150828752
     - path: src/split.py
       hash: md5
-      md5: 01a629c504e5db8ae1508bb8324f19a5
-      size: 1508
+      md5: 33254e12c7a77d41c86b04c2d0f56c26
+      size: 1510
     params:
       params.yaml:
         split:
@@ -22,3 +22,50 @@ stages:
       md5: 8822ff6884be02789b0fdef15483e150.dir
       size: 150817718
       nfiles: 2
+  train:
+    cmd: python src/train.py data/split/train.csv model.json params.yaml
+    deps:
+    - path: data/split/train.csv
+      hash: md5
+      md5: d0e7326d705089e26e1a082dd4843ba6
+      size: 120653265
+    - path: src/train.py
+      hash: md5
+      md5: e1ab469db1fca1bca0bdaf23de3f5fdb
+      size: 3545
+    params:
+      params.yaml:
+        train:
+          k_fold: 5
+          random_state: 123456
+          target_col: Class
+          xgb_params:
+            device: gpu
+            eta: 0.3
+            max_depth: 6
+            subsample: 0.5
+            colsample_bytree: 0.8
+            lambda: 1
+            alpha: 0
+            objective: binary:logistic
+    outs:
+    - path: metrics/train.json
+      hash: md5
+      md5: 3a4936678ee6f0ec791113b99c3116b4
+      size: 132
+      isexec: true
+    - path: model.json
+      hash: md5
+      md5: 895d788387658284242699ba1ef6a56a
+      size: 210216
+      isexec: true
+    - path: plots/cm/train.csv
+      hash: md5
+      md5: 58995b449abc23dce5a705b93f055225
+      size: 4326646
+      isexec: true
+    - path: plots/cm/validation.csv
+      hash: md5
+      md5: 6ec93084c8299eb2830e0a43088c905e
+      size: 4326835
+      isexec: true

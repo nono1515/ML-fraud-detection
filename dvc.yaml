@@ -8,3 +8,33 @@ stages:
       - split
     outs:
       - data/split
+
+  train:
+    cmd: python src/train.py data/split/train.csv model.json params.yaml
+    deps:
+      - src/train.py
+      - data/split/train.csv
+    params:
+      - train
+    outs:
+      - model.json
+      - metrics/train.json
+      - plots/cm/train.csv
+      - plots/cm/validation.csv
+
+metrics:
+  - metrics/validation.json
+
+plots:
+  - Confusion-Matrix:
+      template: confusion
+      x: actual
+      y:
+        plots/cm/train.csv: predicted
+        plots/cm/validation.csv: predicted
+  - Confusion-Matrix-normalized:
+      template: confusion_normalized
+      x: actual
+      y:
+        plots/cm/train.csv: predicted
+        plots/cm/validation.csv: predicted
