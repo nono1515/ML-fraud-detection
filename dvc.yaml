@@ -18,9 +18,9 @@ stages:
       - train
     outs:
       - model.json
-      - metrics/train.json
-      - plots/cm/train.csv
-      - plots/cm/validation.csv
+      - metrics/validation.json
+      - plots/cm
+      - plots/prc
 
 metrics:
   - metrics/validation.json
@@ -38,3 +38,10 @@ plots:
       y:
         plots/cm/train.csv: predicted
         plots/cm/validation.csv: predicted
+
+  - Precision-Recall:
+      template: simple
+      x: recall
+      y:
+        # eval/plots/sklearn/prc/train.json: precision
+        plots/prc/validation.json: precision

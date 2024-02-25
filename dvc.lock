@@ -31,8 +31,8 @@ stages:
       size: 120653265
     - path: src/train.py
       hash: md5
-      md5: e1ab469db1fca1bca0bdaf23de3f5fdb
-      size: 3545
+      md5: 8783ee8a19ef0c746548c3cbefcf05df
+      size: 4644
     params:
       params.yaml:
         train:
@@ -49,7 +49,7 @@ stages:
             alpha: 0
             objective: binary:logistic
     outs:
-    - path: metrics/train.json
+    - path: metrics/validation.json
       hash: md5
       md5: 3a4936678ee6f0ec791113b99c3116b4
       size: 132
@@ -59,13 +59,13 @@ stages:
       md5: 895d788387658284242699ba1ef6a56a
       size: 210216
       isexec: true
-    - path: plots/cm/train.csv
+    - path: plots/cm
       hash: md5
-      md5: 58995b449abc23dce5a705b93f055225
-      size: 4326646
-      isexec: true
-    - path: plots/cm/validation.csv
+      md5: 43b73f65dc8604140213a3bfed746759.dir
+      size: 8653481
+      nfiles: 2
+    - path: plots/prc
       hash: md5
-      md5: 6ec93084c8299eb2830e0a43088c905e
-      size: 4326835
-      isexec: true
+      md5: 128b45fccbfaa096481f18b18f6e7d7f.dir
+      size: 22167982
+      nfiles: 1

@@ -5,6 +5,7 @@ import csv
 import json
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 from sklearn import metrics
@@ -43,14 +44,33 @@ def main() -> None:
     X = data.drop(params["target_col"], axis=1)
 
     # Train the model
-    # Model is determinist -> no need for random state
-    model = XGBClassifier(**params["xgb_params"], verbosity=0)
+    # XGBoost is determinist -> no need for random state
+    model = XGBClassifier(**params["xgb_params"])
     k_fold = StratifiedKFold(
         n_splits=params["k_fold"], shuffle=True, random_state=params["random_state"]
     )
     cross_val_preds = cross_val_predict(model, X, y, cv=k_fold)
+    cross_val_proba = cross_val_predict(
+        model,
+        X,
+        y.squeeze(),
+        cv=k_fold,
+        method="predict_proba",
+    )
 
-    # Save the metrics
+    save_metrics(y, cross_val_preds)
+
+    # Save the model
+    model.fit(X, y)
+    model.save_model(Path(args.model))
+    train_preds = model.predict(X)
+
+    save_confusion_matrices(y, cross_val_preds, train_preds)
+    save_prc_plots(y, cross_val_proba)
+
+
+def save_metrics(y: pd.DataFrame, cross_val_preds: np.ndarray) -> None:
+    """Save aprpropriate metrics"""
     metrics_dict = {}
     metrics_dict["recall"] = metrics.recall_score(y, cross_val_preds)
     metrics_dict["precision"] = metrics.precision_score(y, cross_val_preds)
@@ -59,13 +79,16 @@ def main() -> None:
     # AUC is quite useless in case of imbalanced dataset -> prc is better
     # https://scikit-learn.org/stable/auto_examples/model_selection/plot_precision_recall.html
     metrics_dict["prc"] = metrics.average_precision_score(y, cross_val_preds)
-    with open("metrics/train.json", "w", encoding="utf-8") as json_file:
+    with open("metrics/validation.json", "w", encoding="utf-8") as json_file:
         json.dump(metrics_dict, json_file)
 
-    # Save the model
-    model.fit(X, y)
-    model.save_model(Path(args.model))
-    train_preds = model.predict(X)
+
+def save_confusion_matrices(
+    y: pd.DataFrame,
+    cross_val_preds: np.ndarray,
+    train_preds: np.ndarray,
+) -> None:
+    """Save confusion matrices"""
     y_labels = ["fraud" if y_ else "No fraud" for y_ in y.values]
 
     val_preds_labels = ["fraud" if y_ else "No fraud" for y_ in cross_val_preds]
@@ -84,6 +107,20 @@ def main() -> None:
     with open("plots/cm/train.csv", "w", encoding="utf-8") as csv_file:
         writer = csv.writer(csv_file)
         writer.writerows(train_confusion_matrix)
+
+
+def save_prc_plots(y: pd.DataFrame, y_proba: np.ndarray) -> None:
+    precision, recall, thresholds = metrics.precision_recall_curve(y, y_proba[:, 1])
+    thresholds = thresholds.astype("float64")
+    prc = {
+        "precision_recall": [
+            {"precision": p, "recall": r, "threshold": t}
+            for p, r, t in zip(precision, recall, thresholds)
+        ]
+    }
+    Path("plots/prc").mkdir(parents=True, exist_ok=True)
+    with open("plots/prc/validation.json", "w", encoding="utf-8") as json_file:
+        json.dump(prc, json_file)
 
 
 if __name__ == "__main__":
