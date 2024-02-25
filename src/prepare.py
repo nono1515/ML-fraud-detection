@@ -36,8 +36,9 @@ def main() -> None:
     test_data = pd.read_csv(split_path / "test.csv")
 
     features_to_keep = params["features_to_keep"]
-    train_data = train_data[features_to_keep]
-    test_data = test_data[features_to_keep]
+    if features_to_keep:
+        train_data = train_data[features_to_keep]
+        test_data = test_data[features_to_keep]
 
     # Save the data
     train_data.to_csv(output_path / "train.csv", index=False)
