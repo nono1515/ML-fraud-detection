@@ -9,11 +9,21 @@ stages:
     outs:
       - data/split
 
+  prepare:
+    cmd: python src/prepare.py data/split data/prepared params.yaml
+    deps:
+      - src/prepare.py
+      - data/split
+    params:
+      - prepare
+    outs:
+      - data/prepared
+
   train:
-    cmd: python src/train.py data/split/train.csv model.json params.yaml
+    cmd: python src/train.py data/prepared/train.csv model.json params.yaml
     deps:
       - src/train.py
-      - data/split/train.csv
+      - data/prepared/train.csv
     params:
       - train
     outs:
