@@ -4,8 +4,8 @@ import itertools
 import subprocess
 
 # Automated grid search experiments
-eta_list = [0.1, 0.3, 0.5]
-max_depth_list = [4, 6]
+eta_list = [0.1, 0.3]
+max_depth_list = [6]
 subsample_list = [0.5, 1]
 alpha_list = [0]
 
