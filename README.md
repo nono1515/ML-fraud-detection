@@ -70,7 +70,7 @@ This repo uses DVC for tracking data alongside experiments and metrics. After th
 dvc repro
 dvc metrics show
 # Metrics will be printed in the terminal
-dvc plots
+dvc plots show
 # Plots will be generated in ./dvc_plots/index.html
 ```
 
@@ -79,9 +79,10 @@ dvc plots
 #### Run experiment
 One can easily modify the parameter of the model by directly changing it in the `params.yaml` file and relaunch `dvc repro`. However, this will directly modify the workspace and make difficult the comparison between different models. A better way is to use `dvc exp run` ([doc here](https://dvc.org/doc/command-reference/exp/run)) with the `--set-param flag`. For instance
 ```bash
-dvc exp run dvc.yaml --name my-new-exp --set-param params.yaml:train.xgb_params.max_depth=0
-dvc metrics diff workspace my-new-exp
-dvc plots diff workspace my-new-exp
+dvc exp run dvc.yaml --name baseline
+dvc exp run dvc.yaml --name my-new-exp --set-param params.yaml:train.xgb_params.eta=0.1
+dvc metrics diff baseline my-new-exp
+dvc plots diff baseline my-new-exp
 ```
 The DVC extension for VSCode can also be used to "Run, compare, visualize, and track machine learning experiments right in VS Code".
 
