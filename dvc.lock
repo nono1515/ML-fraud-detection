@@ -9,8 +9,8 @@ stages:
       size: 150828752
     - path: src/split.py
       hash: md5
-      md5: 33254e12c7a77d41c86b04c2d0f56c26
-      size: 1510
+      md5: 09eb779d11fdeaf9621d21561ea0a703
+      size: 1557
     params:
       params.yaml:
         split:
@@ -19,20 +19,20 @@ stages:
     outs:
     - path: data/split
       hash: md5
-      md5: 8822ff6884be02789b0fdef15483e150.dir
-      size: 150817718
+      md5: 2c79dca908c46dfdcaa47d79773c39d4.dir
+      size: 151102527
       nfiles: 2
   train:
-    cmd: python src/train.py data/split/train.csv model.json params.yaml
+    cmd: python src/train.py data/prepared/train.csv model.json params.yaml
     deps:
-    - path: data/split/train.csv
+    - path: data/prepared/train.csv
       hash: md5
-      md5: d0e7326d705089e26e1a082dd4843ba6
-      size: 120653265
+      md5: 206041fd4c8ecc6d88301ef7295e2ffb
+      size: 47765550
     - path: src/train.py
       hash: md5
-      md5: 8783ee8a19ef0c746548c3cbefcf05df
-      size: 4644
+      md5: ee1858b1bdf4254f66d9455ee536f79e
+      size: 4765
     params:
       params.yaml:
         train:
@@ -51,21 +51,54 @@ stages:
     outs:
     - path: metrics/validation.json
       hash: md5
-      md5: 3a4936678ee6f0ec791113b99c3116b4
-      size: 132
-      isexec: true
+      md5: 61ba3ea5d25df1da5035c618ebef7d4f
+      size: 148
     - path: model.json
       hash: md5
-      md5: 895d788387658284242699ba1ef6a56a
-      size: 210216
-      isexec: true
+      md5: 81d80020016a003d0dc79a96e2c02b8c
+      size: 232334
     - path: plots/cm
       hash: md5
-      md5: 43b73f65dc8604140213a3bfed746759.dir
-      size: 8653481
+      md5: ec7ef625c6119efac13b8544aa83f855.dir
+      size: 9109200
       nfiles: 2
     - path: plots/prc
       hash: md5
-      md5: 128b45fccbfaa096481f18b18f6e7d7f.dir
-      size: 22167982
+      md5: 26e870b73708af1cd3819c168495b5e5.dir
+      size: 22212752
       nfiles: 1
+  prepare:
+    cmd: python src/prepare.py data/split data/prepared params.yaml
+    deps:
+    - path: data/split
+      hash: md5
+      md5: 2c79dca908c46dfdcaa47d79773c39d4.dir
+      size: 151102527
+      nfiles: 2
+    - path: src/prepare.py
+      hash: md5
+      md5: 195edacd736fc4708d5b033324500280
+      size: 1609
+    params:
+      params.yaml:
+        prepare:
+          features_to_keep:
+          - Class
+          - V4
+          - V14
+          - V10
+          - V12
+          - Amount
+          - V18
+          - V7
+          - V17
+          - V16
+          - V19
+          - V15
+          - V26
+    outs:
+    - path: data/prepared
+      hash: md5
+      md5: a7d4203b0d26a773206032ffa37bb9ed.dir
+      size: 59707324
+      nfiles: 2
